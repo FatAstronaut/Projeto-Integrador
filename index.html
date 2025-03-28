@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Demandas - Lumini 3</title>
+    <!-- Ícones do FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Fonte do Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f4f8; /* Cor de fundo suave */
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2c3e50;
+            cursor: pointer;
+        }
+
+        .logo .icon {
+            width: 50px;
+            height: 50px;
+            background-color: #6a11cb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-container input[type="text"],
+        .form-container textarea,
+        .form-container input[type="file"],
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-container input[type="text"]:focus,
+        .form-container textarea:focus,
+        .form-container input[type="file"]:focus,
+        .form-container select:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+
+        .form-container textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-container button {
+            background-color: #6a11cb;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-container button:hover {
+            background-color: #2575fc;
+        }
+
+        .demandas-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .demanda-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .demanda-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .demanda-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .demanda-card p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .demanda-card img {
+            max-width: 100%;
+            border-radius: 4px;
+            margin-top: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .demanda-card img:hover {
+            transform: scale(1.05);
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: opacity 0.3s ease;
+        }
+
+        .status.pendente {
+            background-color: #f39c12;
+            color: #fff;
+        }
+
+        .status.resolvido {
+            background-color: #2ecc71;
+            color: #fff;
+        }
+
+        .photo-preview {
+            margin-top: 10px;
+        }
+
+        .photo-preview img {
+            max-width: 100%;
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-preview img:hover {
+            transform: scale(1.05);
+        }
+
+        .icon {
+            font-size: 1.2rem;
+            color: #6a11cb;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header .actions button {
+            background-color: #6a11cb;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .header .actions button:hover {
+            background-color: #2575fc;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .demanda-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Página de Perfil */
+        .profile-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .profile-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .profile-container .user-info {
+            margin-bottom: 20px;
+        }
+
+        .profile-container .user-info p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .profile-container .user-info p strong {
+            color: #2c3e50;
+        }
+
+        /* Barra de Pesquisa */
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho com Logo e Ações -->
+        <div class="header">
+            <div class="logo" onclick="voltarParaInicio()">
+                <div class="icon">L3</div>
+                Lumini 3
+            </div>
+            <div class="actions">
+                <button><i class="fas fa-bell" style="color: #fff;"></i> Notificações</button>
+                <button><i class="fas fa-user" style="color: #fff;"></i> Perfil</button>
+            </div>
+        </div>
+
+        <!-- Barra de Pesquisa -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Pesquisar demandas por título ou descrição...">
+        </div>
+
+        <!-- Formulário de Nova Demanda -->
+        <div class="form-container">
+            <h2><i class="fas fa-plus-circle icon"></i> Nova Demanda</h2>
+            <form id="demandaForm">
+                <label for="title">Título:</label>
+                <input type="text" id="title" name="title" required>
+
+                <label for="location">Localização:</label>
+                <input type="text" id="location" name="location" required>
+
+                <label for="description">Descrição:</label>
+                <textarea id="description" name="description" required></textarea>
+
+                <label for="photo">Foto (opcional):</label>
+                <input type="file" id="photo" name="photo" accept="image/*">
+
+                <div class="photo-preview" id="photoPreview"></div>
+
+                <button type="submit"><i class="fas fa-paper-plane" style="color: #fff;"></i> Enviar Demanda</button>
+            </form>
+        </div>
+
+        <!-- Lista de Demandas -->
+        <h2><i class="fas fa-tasks icon"></i> Demandas Cadastradas</h2>
+        <div class="demandas-list" id="demandasList">
+            <!-- As demandas serão adicionadas aqui via JavaScript -->
+        </div>
+
+        <!-- Página de Perfil -->
+        <div class="profile-container" id="profilePage" style="display: none;">
+            <h2><i class="fas fa-user icon"></i> Perfil do Usuário</h2>
+            <div class="user-info">
+                <p><strong>Nome:</strong> <span id="userName">João Silva</span></p>
+                <p><strong>Email:</strong> <span id="userEmail">joao.silva@example.com</span></p>
+                <p><strong>Telefone:</strong> <span id="userPhone">(11) 98765-4321</span></p>
+            </div>
+            <h3>Histórico de Demandas</h3>
+            <div class="demandas-list" id="profileDemandsList">
+                <!-- As demandas do usuário serão exibidas aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let demandas = [];
+        let contadorDemandas = 1;
+
+        // Função para exibir a foto selecionada no formulário
+        document.getElementById('photo').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    document.getElementById('photoPreview').innerHTML = '';
+                    document.getElementById('photoPreview').appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Função para adicionar uma nova demanda
+        document.getElementById('demandaForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const location = document.getElementById('location').value;
+            const description = document.getElementById('description').value;
+            const photoInput = document.getElementById('photo');
+            const photoFile = photoInput.files[0];
+
+            // Criar objeto de demanda
+            const demanda = {
+                id: contadorDemandas++,
+                title,
+                location,
+                description,
+                photo: photoFile ? URL.createObjectURL(photoFile) : null,
+                status: 'Pendente'
+            };
+
+            demandas.push(demanda);
+
+            // Adicionar a demanda à lista
+            adicionarDemandaNaLista(demanda);
+
+            // Limpar o formulário
+            document.getElementById('demandaForm').reset();
+            document.getElementById('photoPreview').innerHTML = '';
+        });
+
+        // Função para adicionar uma demanda na lista
+        function adicionarDemandaNaLista(demanda) {
+            const demandaCard = document.createElement('div');
+            demandaCard.classList.add('demanda-card');
+
+            demandaCard.innerHTML = `
+                <h3>#${demanda.id} - ${demanda.title}</h3>
+                <p><strong>Localização:</strong> ${demanda.location}</p>
+                <p>${demanda.description}</p>
+                <div class="status pendente">Pendente</div>
+            `;
+
+            // Adicionar a foto, se existir
+            if (demanda.photo) {
+                const img = document.createElement('img');
+                img.src = demanda.photo;
+                demandaCard.appendChild(img);
+            }
+
+            // Adicionar a demanda à lista
+            document.getElementById('demandasList').appendChild(demandaCard);
+        }
+
+        // Função para filtrar demandas
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const termo = this.value.toLowerCase();
+            const demandasFiltradas = demandas.filter(demanda =>
+                demanda.title.toLowerCase().includes(termo) ||
+                demanda.description.toLowerCase().includes(termo)
+            );
+
+            // Limpar a lista de demandas
+            document.getElementById('demandasList').innerHTML = '';
+
+            // Adicionar as demandas filtradas
+            demandasFiltradas.forEach(adicionarDemandaNaLista);
+        });
+
+        // Função para alternar entre a página principal e o perfil
+        document.querySelector('.header .actions button:nth-child(2)').addEventListener('click', function () {
+            document.getElementById('profilePage').style.display = 'block';
+            document.getElementById('demandaForm').style.display = 'none';
+            document.getElementById('demandasList').style.display = 'none';
+        });
+
+        // Função para voltar à página inicial
+        function voltarParaInicio() {
+            document.getElementById('profilePage').style.display = 'none';
+            document.getElementById('demandaForm').style.display = 'block';
+            document.getElementById('demandasList').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
